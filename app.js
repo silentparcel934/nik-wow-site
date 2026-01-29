@@ -128,7 +128,18 @@ const galleryData = {
           { src: "assets/projects/weihnachten/2024/06.jpg", caption: "Weihnachten 2024 (6)", alt: "Weihnachten 2024" }
         ],
       },
-      { key: "2025", label: "2025", items: [] },
+      {
+        key: "2025",
+        label: "2025",
+        items: [
+          { src: "assets/projects/weihnachten/2025/01.jpg", caption: "Weihnachten 2025 (1)", alt: "Weihnachten 2025" },
+          { src: "assets/projects/weihnachten/2025/02.jpg", caption: "Weihnachten 2025 (2)", alt: "Weihnachten 2025" },
+          { src: "assets/projects/weihnachten/2025/03.jpg", caption: "Weihnachten 2025 (3)", alt: "Weihnachten 2025" },
+          { src: "assets/projects/weihnachten/2025/04.jpg", caption: "Weihnachten 2025 (4)", alt: "Weihnachten 2025" },
+          { src: "assets/projects/weihnachten/2025/05.jpg", caption: "Weihnachten 2025 (5)", alt: "Weihnachten 2025" },
+          { src: "assets/projects/weihnachten/2025/06.jpg", caption: "Weihnachten 2025 (6)", alt: "Weihnachten 2025" }
+        ],
+      },
     ],
     empty: {
       title: "Bilder folgen",
