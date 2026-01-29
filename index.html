@@ -123,14 +123,17 @@
         </div>
 
         <div class="project-grid">
-          <figure class="project-card project-card--trigger" data-reveal data-gallery="ferienhaus">
+          <button class="project-card project-card--trigger" type="button" data-reveal data-gallery="ferienhaus">
             <img src="assets/projects/ferienhaus/bauphase/01.jpg" alt="Ferienhaus in der Bauphase" loading="lazy" />
-            <figcaption>
+            <span class="project-card__details">
               <span class="project-title">Ferienhaus</span>
               <span class="project-meta">Bauphase · Galerie</span>
-            </figcaption>
-            <button class="project-card__action" type="button" aria-label="Galerie Ferienhaus öffnen"></button>
-          </figure>
+              <span class="project-card__cta">
+                Galerie öffnen
+                <span aria-hidden="true">›</span>
+              </span>
+            </span>
+          </button>
           <figure class="project-card" data-reveal>
             <img src="assets/project-02.svg" alt="Platzhalterbild für Projekt Zwei" loading="lazy" />
             <figcaption>
@@ -213,16 +216,22 @@
             </div>
 
             <div class="gallery-panel" role="tabpanel" id="panel-aussen" aria-labelledby="tab-aussen" hidden>
-              <p class="gallery-empty">Außenansichten kommen bald.</p>
+              <div class="gallery-empty-card">
+                <p class="gallery-empty-title">Außenansichten</p>
+                <p class="gallery-empty">Die Außenaufnahmen werden bald ergänzt.</p>
+              </div>
             </div>
 
             <div class="gallery-panel" role="tabpanel" id="panel-innen" aria-labelledby="tab-innen" hidden>
-              <p class="gallery-empty">Innenaufnahmen kommen bald.</p>
+              <div class="gallery-empty-card">
+                <p class="gallery-empty-title">Innenaufnahmen</p>
+                <p class="gallery-empty">Innenräume folgen, sobald alles fertig ist.</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="gallery-viewer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Bildanzeige">
+        <div class="gallery-viewer" aria-hidden="true" role="region" aria-label="Bildanzeige">
           <div class="gallery-viewer__stage">
             <button type="button" class="viewer-control" data-viewer-prev aria-label="Vorheriges Bild">
               <span aria-hidden="true">←</span>

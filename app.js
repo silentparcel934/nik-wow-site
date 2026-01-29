@@ -47,6 +47,7 @@ const tabButtons = galleryModal?.querySelectorAll(".gallery-tab");
 const tabPanels = galleryModal?.querySelectorAll(".gallery-panel");
 const galleryThumbs = galleryModal ? Array.from(galleryModal.querySelectorAll(".gallery-thumb")) : [];
 const viewer = galleryModal?.querySelector(".gallery-viewer");
+const viewerStage = galleryModal?.querySelector(".gallery-viewer__stage");
 const viewerImage = document.getElementById("gallery-viewer-image");
 const viewerCaption = document.getElementById("gallery-viewer-caption");
 const viewerPrev = galleryModal?.querySelector("[data-viewer-prev]");
@@ -120,7 +121,12 @@ const openViewer = (index) => {
   if (!viewer) return;
   setViewerIndex(index);
   viewer.classList.add("is-active");
+  viewer.classList.remove("is-ui-hidden");
   viewer.setAttribute("aria-hidden", "false");
+  if (modalPanel) {
+    modalPanel.setAttribute("aria-hidden", "true");
+    modalPanel.setAttribute("inert", "");
+  }
   setTrap(viewer);
   if (viewerClose) viewerClose.focus();
 };
@@ -128,7 +134,12 @@ const openViewer = (index) => {
 const closeViewer = () => {
   if (!viewer) return;
   viewer.classList.remove("is-active");
+  viewer.classList.remove("is-ui-hidden");
   viewer.setAttribute("aria-hidden", "true");
+  if (modalPanel) {
+    modalPanel.removeAttribute("aria-hidden");
+    modalPanel.removeAttribute("inert");
+  }
   setTrap(modalPanel);
 };
 
@@ -153,7 +164,7 @@ if (galleryTriggers.length > 0) {
       openModal();
     });
     trigger.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
+      if ((event.key === "Enter" || event.key === " ") && trigger.tagName !== "BUTTON") {
         event.preventDefault();
         openModal();
       }
@@ -187,10 +198,16 @@ if (viewerClose) {
   viewerClose.addEventListener("click", closeViewer);
 }
 
+const toggleViewerUi = () => {
+  if (!viewer || viewer.getAttribute("aria-hidden") === "true") return;
+  viewer.classList.toggle("is-ui-hidden");
+};
+
 let touchStartX = 0;
 let touchEndX = 0;
 
 const handleSwipe = () => {
+  if (!viewer || !viewer.classList.contains("is-active")) return;
   const delta = touchEndX - touchStartX;
   if (Math.abs(delta) < 40) return;
   if (delta > 0) {
@@ -200,13 +217,29 @@ const handleSwipe = () => {
   }
 };
 
-if (viewerImage) {
-  viewerImage.addEventListener("touchstart", (event) => {
+if (viewerStage) {
+  viewerStage.addEventListener("touchstart", (event) => {
+    if (event.target.closest("button")) return;
     touchStartX = event.changedTouches[0].screenX;
   });
-  viewerImage.addEventListener("touchend", (event) => {
+  viewerStage.addEventListener("touchend", (event) => {
+    if (event.target.closest("button")) return;
     touchEndX = event.changedTouches[0].screenX;
     handleSwipe();
+  });
+}
+
+if (viewerStage) {
+  viewerStage.addEventListener("click", (event) => {
+    if (event.target.closest("button")) return;
+    toggleViewerUi();
+  });
+}
+
+if (viewerImage) {
+  viewerImage.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleViewerUi();
   });
 }
 
