@@ -78,7 +78,44 @@ const galleryData = {
   weihnachten: {
     title: "Weihnachten",
     tabs: [
-      { key: "2023", label: "2023", items: [] },
+      {
+        key: "2021",
+        label: "2021",
+        items: [
+          {
+            src: "assets/projects/weihnachten/2021/01.jpg",
+            caption: "Weihnachten 2021",
+            alt: "Weihnachten 2021",
+          },
+        ],
+      },
+      {
+        key: "2022",
+        label: "2022",
+        items: [
+          {
+            src: "assets/projects/weihnachten/2022/01.jpg",
+            caption: "Weihnachten 2022",
+            alt: "Weihnachten 2022",
+          },
+        ],
+      },
+      {
+        key: "2023",
+        label: "2023",
+        items: [
+          {
+            src: "assets/projects/weihnachten/2023/01.jpg",
+            caption: "Weihnachten 2023 (1)",
+            alt: "Weihnachten 2023",
+          },
+          {
+            src: "assets/projects/weihnachten/2023/02.jpg",
+            caption: "Weihnachten 2023 (2)",
+            alt: "Weihnachten 2023",
+          },
+        ],
+      },
       { key: "2024", label: "2024", items: [] },
       { key: "2025", label: "2025", items: [] },
     ],
