@@ -39,13 +39,82 @@ if (!prefersReducedMotion) {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+const galleryData = {
+  ferienhaus: {
+    title: "Ferienhaus",
+    tabs: [
+      {
+        key: "bauphase",
+        label: "Bauphase",
+        items: [
+          { src: "assets/projects/ferienhaus/bauphase/01.jpg", caption: "Bauphase 01", alt: "Bauphase Bild 1" },
+          { src: "assets/projects/ferienhaus/bauphase/02.jpg", caption: "Bauphase 02", alt: "Bauphase Bild 2" },
+          { src: "assets/projects/ferienhaus/bauphase/03.jpg", caption: "Bauphase 03", alt: "Bauphase Bild 3" },
+          { src: "assets/projects/ferienhaus/bauphase/04.jpg", caption: "Bauphase 04", alt: "Bauphase Bild 4" },
+          { src: "assets/projects/ferienhaus/bauphase/05.jpg", caption: "Bauphase 05", alt: "Bauphase Bild 5" },
+          { src: "assets/projects/ferienhaus/bauphase/06.jpg", caption: "Bauphase 06", alt: "Bauphase Bild 6" },
+        ],
+      },
+      {
+        key: "aussen",
+        label: "Außen",
+        items: [
+          { src: "assets/projects/ferienhaus/aussen/01.jpg?v=20260129", caption: "Außen 01", alt: "Außen Bild 1" },
+          { src: "assets/projects/ferienhaus/aussen/02.jpg?v=20260129", caption: "Außen 02", alt: "Außen Bild 2" },
+          { src: "assets/projects/ferienhaus/aussen/03.jpg?v=20260129", caption: "Außen 03", alt: "Außen Bild 3" },
+        ],
+      },
+      {
+        key: "innen",
+        label: "Innen",
+        items: [
+          { src: "assets/projects/ferienhaus/innen/01.jpg?v=20260129", caption: "Innen 01", alt: "Innen Bild 1" },
+          { src: "assets/projects/ferienhaus/innen/02.jpg?v=20260129", caption: "Innen 02", alt: "Innen Bild 2" },
+          { src: "assets/projects/ferienhaus/innen/03.jpg?v=20260129", caption: "Innen 03", alt: "Innen Bild 3" },
+        ],
+      },
+    ],
+  },
+  weihnachten: {
+    title: "Weihnachten",
+    tabs: [
+      { key: "2023", label: "2023", items: [] },
+      { key: "2024", label: "2024", items: [] },
+      { key: "2025", label: "2025", items: [] },
+    ],
+    empty: {
+      title: "Bilder folgen",
+      copy: "Aktuell ist diese Jahresgalerie noch leer. Hier kommen bald weihnachtliche Eindrücke.",
+    },
+  },
+  "partys-events": {
+    title: "Partys & Events",
+    tabs: [{ key: "galerie", label: "Galerie", items: [] }],
+    empty: {
+      title: "Momente in Planung",
+      copy: "Hier sammeln sich bald die besten Party- und Eventfotos. Bleib dran!",
+    },
+  },
+  fotografie: {
+    title: "Fotografie",
+    tabs: [
+      { key: "landschaft", label: "Landschaft", items: [] },
+      { key: "best-shots", label: "Best Shots", items: [] },
+    ],
+    empty: {
+      title: "Shots folgen",
+      copy: "Die Auswahl wird gerade kuratiert. Bald gibt es hier neue Lieblingsbilder.",
+    },
+  },
+};
+
 const galleryModal = document.getElementById("gallery-modal");
-const galleryTriggers = document.querySelectorAll("[data-gallery='ferienhaus']");
+const galleryTriggers = document.querySelectorAll("[data-gallery]");
 const modalPanel = galleryModal?.querySelector(".gallery-modal__panel");
 const modalCloseButtons = galleryModal?.querySelectorAll("[data-gallery-close]");
-const tabButtons = galleryModal?.querySelectorAll(".gallery-tab");
-const tabPanels = galleryModal?.querySelectorAll(".gallery-panel");
-const galleryThumbs = galleryModal ? Array.from(galleryModal.querySelectorAll(".gallery-thumb")) : [];
+const galleryTabs = galleryModal?.querySelector(".gallery-tabs");
+const galleryBody = galleryModal?.querySelector(".gallery-body");
+const galleryTitle = document.getElementById("gallery-title");
 const viewer = galleryModal?.querySelector(".gallery-viewer");
 const viewerStage = galleryModal?.querySelector(".gallery-viewer__stage");
 const viewerImage = document.getElementById("gallery-viewer-image");
@@ -54,11 +123,21 @@ const viewerPrev = galleryModal?.querySelector("[data-viewer-prev]");
 const viewerNext = galleryModal?.querySelector("[data-viewer-next]");
 const viewerClose = galleryModal?.querySelector("[data-viewer-close]");
 
+let tabButtons = [];
+let tabPanels = [];
+let galleryThumbs = [];
+
 let lastFocusedElement = null;
 let activeTrap = null;
 let currentIndex = 0;
 let activeTabKey = "bauphase";
 let activeThumbs = [];
+let activeGalleryKey = "ferienhaus";
+
+const defaultEmptyState = {
+  title: "Bilder folgen",
+  copy: "Diese Galerie ist noch leer. Schon bald gibt es hier neue Aufnahmen.",
+};
 
 const focusableSelector =
   "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
@@ -85,8 +164,96 @@ const trapFocus = (event) => {
   }
 };
 
-const openModal = () => {
+const renderGallery = (galleryKey) => {
+  if (!galleryModal || !galleryTabs || !galleryBody) return;
+  const gallery = galleryData[galleryKey];
+  if (!gallery) return;
+  activeGalleryKey = galleryKey;
+  if (galleryTitle) {
+    galleryTitle.textContent = gallery.title;
+  }
+
+  galleryTabs.innerHTML = "";
+  galleryBody.innerHTML = "";
+
+  gallery.tabs.forEach((tab, index) => {
+    const tabId = `tab-${tab.key}`;
+    const panelId = `panel-${tab.key}`;
+    const tabButton = document.createElement("button");
+    tabButton.className = "gallery-tab";
+    tabButton.type = "button";
+    tabButton.setAttribute("role", "tab");
+    tabButton.id = tabId;
+    tabButton.setAttribute("aria-controls", panelId);
+    tabButton.dataset.tab = tab.key;
+    tabButton.textContent = tab.label;
+
+    const panel = document.createElement("div");
+    panel.className = "gallery-panel";
+    panel.id = panelId;
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", tabId);
+
+    const grid = document.createElement("div");
+    grid.className = "gallery-grid";
+
+    if (tab.items.length === 0) {
+      const emptyState = tab.empty || gallery.empty || defaultEmptyState;
+      const emptyCard = document.createElement("div");
+      emptyCard.className = "gallery-empty-card";
+      const emptyTitle = document.createElement("p");
+      emptyTitle.className = "gallery-empty-title";
+      emptyTitle.textContent = emptyState.title;
+      const emptyCopy = document.createElement("p");
+      emptyCopy.className = "gallery-empty";
+      emptyCopy.textContent = emptyState.copy;
+      emptyCard.append(emptyTitle, emptyCopy);
+      grid.append(emptyCard);
+    } else {
+      tab.items.forEach((item, itemIndex) => {
+        const thumb = document.createElement("button");
+        thumb.className = "gallery-thumb";
+        thumb.type = "button";
+        thumb.setAttribute("aria-label", `${tab.label} Bild ${itemIndex + 1} öffnen`);
+        thumb.dataset.caption = item.caption || "";
+        const image = document.createElement("img");
+        image.src = item.src;
+        image.alt = item.alt || item.caption || `${tab.label} Bild ${itemIndex + 1}`;
+        image.loading = "lazy";
+        thumb.append(image);
+        grid.append(thumb);
+      });
+    }
+
+    panel.append(grid);
+    galleryTabs.append(tabButton);
+    galleryBody.append(panel);
+  });
+
+  tabButtons = Array.from(galleryModal.querySelectorAll(".gallery-tab"));
+  tabPanels = Array.from(galleryModal.querySelectorAll(".gallery-panel"));
+  galleryThumbs = Array.from(galleryModal.querySelectorAll(".gallery-thumb"));
+
+  tabButtons.forEach((tab) => tab.addEventListener("click", () => activateTab(tab)));
+  galleryThumbs.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const panel = thumb.closest(".gallery-panel");
+      const tabKey = panel?.id?.replace("panel-", "") || activeTabKey;
+      const thumbsInPanel = getThumbsForTab(tabKey);
+      const index = thumbsInPanel.indexOf(thumb);
+      openViewer(index === -1 ? 0 : index, tabKey);
+    });
+  });
+
+  const defaultTab = tabButtons[0];
+  if (defaultTab) {
+    activateTab(defaultTab);
+  }
+};
+
+const openModal = (galleryKey) => {
   if (!galleryModal) return;
+  renderGallery(galleryKey);
   lastFocusedElement = document.activeElement;
   galleryModal.classList.add("is-active");
   galleryModal.setAttribute("aria-hidden", "false");
@@ -127,7 +294,12 @@ const setViewerIndex = (index) => {
   viewerImage.src = thumbImage.src;
   viewerImage.alt = thumbImage.alt;
   const tabLabel = getTabLabel(activeTabKey);
-  viewerCaption.textContent = `${tabLabel} · Bild ${currentIndex + 1} von ${activeThumbs.length}`;
+  const caption = activeThumbs[currentIndex].dataset.caption;
+  if (caption) {
+    viewerCaption.textContent = `${tabLabel} · ${caption} (${currentIndex + 1} von ${activeThumbs.length})`;
+  } else {
+    viewerCaption.textContent = `${tabLabel} · Bild ${currentIndex + 1} von ${activeThumbs.length}`;
+  }
 };
 
 const openViewer = (index, tabKey = activeTabKey) => {
@@ -159,7 +331,7 @@ const closeViewer = () => {
 };
 
 const activateTab = (tab) => {
-  if (!tabButtons || !tabPanels) return;
+  if (tabButtons.length === 0 || tabPanels.length === 0) return;
   tabButtons.forEach((button) => {
     const isActive = button === tab;
     button.classList.toggle("is-active", isActive);
@@ -182,12 +354,14 @@ if (galleryTriggers.length > 0) {
   galleryTriggers.forEach((trigger) => {
     trigger.addEventListener("click", (event) => {
       event.preventDefault();
-      openModal();
+      const galleryKey = trigger.dataset.gallery || activeGalleryKey;
+      openModal(galleryKey);
     });
     trigger.addEventListener("keydown", (event) => {
       if ((event.key === "Enter" || event.key === " ") && trigger.tagName !== "BUTTON") {
         event.preventDefault();
-        openModal();
+        const galleryKey = trigger.dataset.gallery || activeGalleryKey;
+        openModal(galleryKey);
       }
     });
   });
@@ -197,21 +371,7 @@ if (modalCloseButtons) {
   modalCloseButtons.forEach((button) => button.addEventListener("click", closeModal));
 }
 
-if (tabButtons) {
-  tabButtons.forEach((tab) => {
-    tab.addEventListener("click", () => activateTab(tab));
-  });
-}
-
-galleryThumbs.forEach((thumb) => {
-  thumb.addEventListener("click", () => {
-    const panel = thumb.closest(".gallery-panel");
-    const tabKey = panel?.id?.replace("panel-", "") || activeTabKey;
-    const thumbsInPanel = getThumbsForTab(tabKey);
-    const index = thumbsInPanel.indexOf(thumb);
-    openViewer(index === -1 ? 0 : index, tabKey);
-  });
-});
+renderGallery(activeGalleryKey);
 
 if (viewerPrev) {
   viewerPrev.addEventListener("click", () => setViewerIndex(currentIndex - 1));
