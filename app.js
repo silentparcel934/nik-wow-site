@@ -165,6 +165,38 @@ const galleryData = {
       copy: "Die Auswahl wird gerade kuratiert. Bald gibt es hier neue Lieblingsbilder.",
     },
   },
+  gaerten: {
+    title: "Gärten",
+    tabs: [
+      {
+        key: "garten-1",
+        label: "Garten 1",
+        items: [],
+        empty: {
+          title: "Beete in Vorbereitung",
+          copy: "Die ersten Gartenaufnahmen kommen bald. Hier wächst gerade etwas.",
+        },
+      },
+      {
+        key: "garten-2",
+        label: "Garten 2",
+        items: [],
+        empty: {
+          title: "Pflanzplan folgt",
+          copy: "Noch ist es ruhig im Beet. Bald gibt es neue Einblicke.",
+        },
+      },
+      {
+        key: "garten-3",
+        label: "Garten 3",
+        items: [],
+        empty: {
+          title: "Gartenmomente incoming",
+          copy: "Die Galerie wartet auf neue Lieblingsplätze im Grünen.",
+        },
+      },
+    ],
+  },
 };
 
 const galleryModal = document.getElementById("gallery-modal");
