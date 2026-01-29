@@ -123,12 +123,13 @@
         </div>
 
         <div class="project-grid">
-          <figure class="project-card" data-reveal>
-            <img src="assets/project-01.svg" alt="Platzhalterbild für Projekt Eins" loading="lazy" />
+          <figure class="project-card project-card--trigger" data-reveal data-gallery="ferienhaus">
+            <img src="assets/projects/ferienhaus/bauphase/01.jpg" alt="Ferienhaus in der Bauphase" loading="lazy" />
             <figcaption>
-              <span class="project-title">Projekt Eins</span>
-              <span class="project-meta">Kurze Beschreibung</span>
+              <span class="project-title">Ferienhaus</span>
+              <span class="project-meta">Bauphase · Galerie</span>
             </figcaption>
+            <button class="project-card__action" type="button" aria-label="Galerie Ferienhaus öffnen"></button>
           </figure>
           <figure class="project-card" data-reveal>
             <img src="assets/project-02.svg" alt="Platzhalterbild für Projekt Zwei" loading="lazy" />
@@ -167,6 +168,78 @@
           </figure>
         </div>
       </section>
+
+      <div class="gallery-modal" id="gallery-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+        <div class="gallery-modal__backdrop" data-gallery-close></div>
+        <div class="gallery-modal__panel" role="document">
+          <header class="gallery-modal__header">
+            <div>
+              <span class="gallery-modal__eyebrow">Projekt</span>
+              <h3 id="gallery-title">Ferienhaus</h3>
+            </div>
+            <button type="button" class="icon-button" data-gallery-close aria-label="Galerie schließen">
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+
+          <div class="gallery-tabs" role="tablist" aria-label="Galerie Filter">
+            <button class="gallery-tab is-active" role="tab" id="tab-bauphase" aria-selected="true" aria-controls="panel-bauphase" type="button" data-tab="bauphase">Bauphase</button>
+            <button class="gallery-tab" role="tab" id="tab-aussen" aria-selected="false" aria-controls="panel-aussen" type="button" data-tab="aussen">Außen</button>
+            <button class="gallery-tab" role="tab" id="tab-innen" aria-selected="false" aria-controls="panel-innen" type="button" data-tab="innen">Innen</button>
+          </div>
+
+          <div class="gallery-body">
+            <div class="gallery-panel is-active" role="tabpanel" id="panel-bauphase" aria-labelledby="tab-bauphase">
+              <div class="gallery-grid">
+                <button class="gallery-thumb" type="button" data-index="0" aria-label="Bauphase Bild 1 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/01.jpg" alt="Bauphase Bild 1" loading="lazy" />
+                </button>
+                <button class="gallery-thumb" type="button" data-index="1" aria-label="Bauphase Bild 2 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/02.jpg" alt="Bauphase Bild 2" loading="lazy" />
+                </button>
+                <button class="gallery-thumb" type="button" data-index="2" aria-label="Bauphase Bild 3 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/03.jpg" alt="Bauphase Bild 3" loading="lazy" />
+                </button>
+                <button class="gallery-thumb" type="button" data-index="3" aria-label="Bauphase Bild 4 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/04.jpg" alt="Bauphase Bild 4" loading="lazy" />
+                </button>
+                <button class="gallery-thumb" type="button" data-index="4" aria-label="Bauphase Bild 5 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/05.jpg" alt="Bauphase Bild 5" loading="lazy" />
+                </button>
+                <button class="gallery-thumb" type="button" data-index="5" aria-label="Bauphase Bild 6 öffnen">
+                  <img src="assets/projects/ferienhaus/bauphase/06.jpg" alt="Bauphase Bild 6" loading="lazy" />
+                </button>
+              </div>
+            </div>
+
+            <div class="gallery-panel" role="tabpanel" id="panel-aussen" aria-labelledby="tab-aussen" hidden>
+              <p class="gallery-empty">Außenansichten kommen bald.</p>
+            </div>
+
+            <div class="gallery-panel" role="tabpanel" id="panel-innen" aria-labelledby="tab-innen" hidden>
+              <p class="gallery-empty">Innenaufnahmen kommen bald.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-viewer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Bildanzeige">
+          <div class="gallery-viewer__stage">
+            <button type="button" class="viewer-control" data-viewer-prev aria-label="Vorheriges Bild">
+              <span aria-hidden="true">←</span>
+            </button>
+            <figure class="gallery-viewer__figure">
+              <img id="gallery-viewer-image" src="" alt="" />
+              <figcaption id="gallery-viewer-caption"></figcaption>
+            </figure>
+            <button type="button" class="viewer-control" data-viewer-next aria-label="Nächstes Bild">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <button type="button" class="viewer-close" data-viewer-close aria-label="Bildanzeige schließen">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      </div>
 
       <footer class="footer" data-reveal>
         <span>© 2026 Nik</span>
