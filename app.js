@@ -116,7 +116,18 @@ const galleryData = {
           },
         ],
       },
-      { key: "2024", label: "2024", items: [] },
+      {
+        key: "2024",
+        label: "2024",
+        items: [
+          { src: "assets/projects/weihnachten/2024/01.jpg", caption: "Weihnachten 2024 (1)", alt: "Weihnachten 2024" },
+          { src: "assets/projects/weihnachten/2024/02.jpg", caption: "Weihnachten 2024 (2)", alt: "Weihnachten 2024" },
+          { src: "assets/projects/weihnachten/2024/03.jpg", caption: "Weihnachten 2024 (3)", alt: "Weihnachten 2024" },
+          { src: "assets/projects/weihnachten/2024/04.jpg", caption: "Weihnachten 2024 (4)", alt: "Weihnachten 2024" },
+          { src: "assets/projects/weihnachten/2024/05.jpg", caption: "Weihnachten 2024 (5)", alt: "Weihnachten 2024" },
+          { src: "assets/projects/weihnachten/2024/06.jpg", caption: "Weihnachten 2024 (6)", alt: "Weihnachten 2024" }
+        ],
+      },
       { key: "2025", label: "2025", items: [] },
     ],
     empty: {
