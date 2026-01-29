@@ -57,6 +57,8 @@ const viewerClose = galleryModal?.querySelector("[data-viewer-close]");
 let lastFocusedElement = null;
 let activeTrap = null;
 let currentIndex = 0;
+let activeTabKey = "bauphase";
+let activeThumbs = [];
 
 const focusableSelector =
   "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
@@ -107,18 +109,31 @@ const closeModal = () => {
   }
 };
 
+const getTabLabel = (tabKey) => {
+  const tabButton = galleryModal?.querySelector(`.gallery-tab[data-tab="${tabKey}"]`);
+  return tabButton ? tabButton.textContent.trim() : "Galerie";
+};
+
+const getThumbsForTab = (tabKey) => {
+  const panel = galleryModal?.querySelector(`#panel-${tabKey}`);
+  return panel ? Array.from(panel.querySelectorAll(".gallery-thumb")) : [];
+};
+
 const setViewerIndex = (index) => {
-  if (!viewerImage || !viewerCaption || galleryThumbs.length === 0) return;
-  currentIndex = (index + galleryThumbs.length) % galleryThumbs.length;
-  const thumbImage = galleryThumbs[currentIndex].querySelector("img");
+  if (!viewerImage || !viewerCaption || activeThumbs.length === 0) return;
+  currentIndex = (index + activeThumbs.length) % activeThumbs.length;
+  const thumbImage = activeThumbs[currentIndex].querySelector("img");
   if (!thumbImage) return;
   viewerImage.src = thumbImage.src;
   viewerImage.alt = thumbImage.alt;
-  viewerCaption.textContent = `Bauphase · Bild ${currentIndex + 1} von ${galleryThumbs.length}`;
+  const tabLabel = getTabLabel(activeTabKey);
+  viewerCaption.textContent = `${tabLabel} · Bild ${currentIndex + 1} von ${activeThumbs.length}`;
 };
 
-const openViewer = (index) => {
+const openViewer = (index, tabKey = activeTabKey) => {
   if (!viewer) return;
+  activeTabKey = tabKey;
+  activeThumbs = getThumbsForTab(activeTabKey);
   setViewerIndex(index);
   viewer.classList.add("is-active");
   viewer.classList.remove("is-ui-hidden");
@@ -155,6 +170,12 @@ const activateTab = (tab) => {
     panel.classList.toggle("is-active", isTarget);
     panel.hidden = !isTarget;
   });
+  activeTabKey = tab.dataset.tab;
+  activeThumbs = getThumbsForTab(activeTabKey);
+  currentIndex = 0;
+  if (viewer?.classList.contains("is-active")) {
+    closeViewer();
+  }
 };
 
 if (galleryTriggers.length > 0) {
@@ -182,8 +203,14 @@ if (tabButtons) {
   });
 }
 
-galleryThumbs.forEach((thumb, index) => {
-  thumb.addEventListener("click", () => openViewer(index));
+galleryThumbs.forEach((thumb) => {
+  thumb.addEventListener("click", () => {
+    const panel = thumb.closest(".gallery-panel");
+    const tabKey = panel?.id?.replace("panel-", "") || activeTabKey;
+    const thumbsInPanel = getThumbsForTab(tabKey);
+    const index = thumbsInPanel.indexOf(thumb);
+    openViewer(index === -1 ? 0 : index, tabKey);
+  });
 });
 
 if (viewerPrev) {
