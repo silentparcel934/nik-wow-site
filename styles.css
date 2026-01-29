@@ -1,14 +1,23 @@
 :root {
   color-scheme: dark;
-  --bg: #0b0c10;
-  --bg-soft: #11131a;
-  --card: rgba(17, 19, 26, 0.85);
-  --stroke: rgba(255, 255, 255, 0.08);
-  --text: #f5f3ef;
-  --muted: #b7b6b3;
-  --accent: #87f5d3;
-  --accent-strong: #a1a6ff;
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --bg0: #08060f;
+  --bg1: #120b1f;
+  --bg2: #14142b;
+  --card: rgba(13, 16, 32, 0.86);
+  --stroke: rgba(74, 92, 164, 0.32);
+  --text: #f6f4fb;
+  --muted: #b2b6c9;
+  --accentCyan: #2ef2ff;
+  --accentBlue: #2d6bff;
+  --accentPurple: #4f3df2;
+  --accentLilac: #d7a6ff;
+  --accentTurquoise: #38f3d4;
+  --glow-cyan: rgba(46, 242, 255, 0.3);
+  --glow-blue: rgba(45, 107, 255, 0.28);
+  --glow-purple: rgba(79, 61, 242, 0.26);
+  --glow-lilac: rgba(215, 166, 255, 0.24);
+  --btn-gradient: linear-gradient(120deg, rgba(46, 242, 255, 0.95), rgba(45, 107, 255, 0.9), rgba(215, 166, 255, 0.75));
+  --shadow: 0 20px 60px rgba(5, 6, 12, 0.55);
   --radius-lg: 28px;
   --radius-md: 18px;
   --radius-sm: 12px;
@@ -24,7 +33,10 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
-  background: var(--bg);
+  background:
+    radial-gradient(60% 60% at 15% 20%, rgba(79, 61, 242, 0.18), transparent 70%),
+    radial-gradient(50% 45% at 80% 10%, rgba(46, 242, 255, 0.12), transparent 72%),
+    linear-gradient(160deg, var(--bg0), var(--bg1));
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -43,9 +55,9 @@ body::after {
 
 body::before {
   background:
-    radial-gradient(40% 35% at 15% 20%, rgba(135, 245, 211, 0.2), transparent 70%),
-    radial-gradient(35% 40% at 85% 15%, rgba(161, 166, 255, 0.25), transparent 70%),
-    radial-gradient(45% 45% at 40% 80%, rgba(255, 179, 133, 0.15), transparent 70%);
+    radial-gradient(42% 36% at 12% 18%, var(--glow-cyan), transparent 72%),
+    radial-gradient(38% 42% at 86% 12%, var(--glow-lilac), transparent 70%),
+    radial-gradient(46% 48% at 40% 82%, var(--glow-blue), transparent 72%);
   transform: translateY(calc(var(--scroll) * -0.04px));
   transition: transform 0.2s ease-out;
 }
@@ -71,7 +83,7 @@ a {
   left: -999px;
   top: 16px;
   padding: 10px 16px;
-  background: var(--bg-soft);
+  background: var(--bg2);
   color: var(--text);
   border-radius: 999px;
   border: 1px solid var(--stroke);
@@ -101,8 +113,9 @@ a {
   inset: -20% -20% auto -20%;
   height: 320px;
   background:
-    radial-gradient(circle at 20% 40%, rgba(135, 245, 211, 0.35), transparent 60%),
-    radial-gradient(circle at 70% 20%, rgba(161, 166, 255, 0.4), transparent 55%);
+    radial-gradient(circle at 20% 40%, rgba(46, 242, 255, 0.42), transparent 60%),
+    radial-gradient(circle at 70% 20%, rgba(215, 166, 255, 0.36), transparent 55%),
+    radial-gradient(circle at 65% 70%, rgba(45, 107, 255, 0.35), transparent 60%);
   filter: blur(20px);
   transform: translateY(calc(var(--scroll) * -0.08px));
   z-index: -1;
@@ -131,9 +144,9 @@ a {
 .pill {
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(135, 245, 211, 0.12);
-  color: var(--accent);
-  border: 1px solid rgba(135, 245, 211, 0.35);
+  background: rgba(46, 242, 255, 0.12);
+  color: var(--accentCyan);
+  border: 1px solid rgba(46, 242, 255, 0.4);
 }
 
 .status {
@@ -175,9 +188,9 @@ a {
 }
 
 .btn.primary {
-  background: linear-gradient(120deg, rgba(135, 245, 211, 0.9), rgba(161, 166, 255, 0.9));
-  color: #0b0c10;
-  box-shadow: 0 10px 30px rgba(135, 245, 211, 0.25);
+  background: var(--btn-gradient);
+  color: #081018;
+  box-shadow: 0 12px 32px rgba(45, 107, 255, 0.3);
 }
 
 .btn.ghost {
@@ -196,7 +209,7 @@ a {
 .btn:focus-visible,
 .link-card:focus-visible,
 .social:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accentCyan);
   outline-offset: 3px;
 }
 
@@ -217,7 +230,7 @@ a {
 }
 
 .social:hover {
-  border-color: rgba(135, 245, 211, 0.4);
+  border-color: rgba(46, 242, 255, 0.5);
   color: var(--text);
 }
 
@@ -254,7 +267,7 @@ a {
   position: relative;
   padding: 18px 20px;
   border-radius: var(--radius-md);
-  background: rgba(16, 18, 26, 0.75);
+  background: rgba(12, 14, 30, 0.75);
   border: 1px solid var(--stroke);
   display: grid;
   grid-template-columns: 1fr auto;
@@ -276,7 +289,12 @@ a {
 
 .link-arrow {
   font-size: 1.2rem;
-  color: var(--accent);
+  color: var(--accentCyan);
+}
+
+.link-card:hover {
+  border-color: rgba(46, 242, 255, 0.45);
+  background: rgba(15, 18, 38, 0.82);
 }
 
 .projects {
@@ -292,12 +310,16 @@ a {
 }
 
 .project-card {
-  background: rgba(16, 18, 26, 0.8);
+  background: rgba(12, 14, 30, 0.8);
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--stroke);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(45, 107, 255, 0.4);
 }
 
 .project-card img {
